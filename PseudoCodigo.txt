@@ -1,0 +1,40 @@
+colorear_grafo(cant_colores, cant_nodos):
+    solucion = Falso
+    lista_colores = [0] * cant_nodos
+
+    SI pintado_recursivo(cant_colores,cant_nodos,lista_colores,0) == Falso
+        ENTONCES
+            IMPRIME "La solución no existe"
+        SINO 
+            PARA i DESDE 0 HASTA cant_nodos 
+                lista_colores[i] -= 1
+            IMPRIME "La solución existe"
+            solucion = lista_colores
+    RETORNA solucion
+
+pintado_recursivo(cant_colores,cant_nodos,lista_colores,nodo):
+    SI nodo == cant_nodos:
+        ENTONCES
+            RETORNA Verdadero
+    PARA color desde 1 hasta cant_colores+1
+        adecuado = es_adecuado(nodo,lista_colores,color)
+        SI adecuado == Verdadero
+            ENTONCES
+                lista_colores[nodo] = color
+                SI pintado_recursivo(cant_colores,cant_nodos, 
+                                    lista_colores,nodo+1) == Verdadero
+                    ENTONCES
+                        RETORNA Verdadero
+                SINO
+                    lista_colores[nodo] = 0
+                    RETORNA Falso
+    RETORNA None
+
+es_adecuado(nodo,lista_colores,color,cant_nodos):
+    adecuado = Verdadero
+    adyacentes_a_nodo = grafo.adyacentes(nodo)
+    PARA i EN adyacentes_a_nodo
+        lista_colores[i] == color
+            ENTONCES
+                adecuado = Falso
+    RETORNA adecuado
